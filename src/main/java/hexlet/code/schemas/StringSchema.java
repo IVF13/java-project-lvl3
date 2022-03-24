@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class StringSchema {
-    private final Map<StringSchemaChecks, Object> checkList = new HashMap<>();
+    private final Map<StringSchemaChecks, String> checkList = new HashMap<>();
     private final StringSchemaValidator validator;
 
     public StringSchema() {
@@ -22,7 +22,7 @@ public final class StringSchema {
     }
 
     public StringSchema minLength(int length) {
-        checkList.put(StringSchemaChecks.minLength, length);
+        checkList.put(StringSchemaChecks.minLength, String.valueOf(length));
         return this;
     }
 
