@@ -19,7 +19,7 @@ public final class StringSchemaValidator extends Validator {
                         return false;
                     }
                 case contains:
-                    if (!stringToValidate.contains(entry.getValue().toString())) {
+                    if (!stringToValidate.contains(entry.getValue())) {
                         return false;
                     }
                 case minLength:
