@@ -2,5 +2,6 @@ package hexlet.code.schemas;
 
 public enum StringSchemaChecks {
     required,
-    contains
+    contains,
+    minLength
 }

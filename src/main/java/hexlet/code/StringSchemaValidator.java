@@ -6,8 +6,8 @@ import java.util.Map;
 
 public final class StringSchemaValidator extends Validator {
 
-    public boolean isValid(Map<StringSchemaChecks, String> checkList, String stringToValidate) {
-        for (Map.Entry<StringSchemaChecks, String> entry : checkList.entrySet()) {
+    public boolean isValid(Map<StringSchemaChecks, Object> checkList, String stringToValidate) {
+        for (Map.Entry<StringSchemaChecks, Object> entry : checkList.entrySet()) {
 
             if (entry.getKey().equals(StringSchemaChecks.required)) {
 
@@ -17,17 +17,22 @@ public final class StringSchemaValidator extends Validator {
                     return false;
                 }
 
-                return true;
             }
 
             if (entry.getKey().equals(StringSchemaChecks.contains)) {
 
-                if (stringToValidate.contains(entry.getValue())) {
-                    return true;
+                if (!stringToValidate.contains(entry.getValue().toString())) {
+                    return false;
                 }
 
-                return false;
+            }
 
+            if(entry.getKey().equals(StringSchemaChecks.minLength)){
+
+                if((int)entry.getValue() > stringToValidate.length()){
+                    return false;
+                }
+                
             }
 
         }

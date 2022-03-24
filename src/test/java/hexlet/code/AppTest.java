@@ -28,6 +28,10 @@ class AppTest {
 
         assertEquals(false, schema.isValid("what does the fox say"));
 
+        assertEquals(true, schema.minLength(4).isValid("whatthe"));
+        assertEquals(false, schema.isValid("lol"));
+
+
     }
 
 }
