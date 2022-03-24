@@ -9,6 +9,7 @@ import static java.lang.Integer.parseInt;
 public final class StringSchemaValidator extends Validator {
 
     public boolean isValid(Map<StringSchemaChecks, String> checkList, String stringToValidate) {
+        boolean isValid = true;
         for (Map.Entry<StringSchemaChecks, String> entry : checkList.entrySet()) {
 
             switch (entry.getKey()) {
@@ -16,16 +17,16 @@ public final class StringSchemaValidator extends Validator {
                     if (stringToValidate == null) {
                         return false;
                     } else if (stringToValidate.length() == 0) {
-                        return false;
+                        isValid = false;
                     }
                 case contains:
                     if (!stringToValidate.contains(entry.getValue())) {
-                        return false;
+                        isValid = false;
                     }
                 case minLength:
                     if (entry.getValue().matches("[-+]?\\d+")) {
                         if (parseInt(entry.getValue()) > stringToValidate.length()) {
-                            return false;
+                            isValid = false;
                         }
                     }
                 default:
@@ -33,7 +34,7 @@ public final class StringSchemaValidator extends Validator {
 
         }
 
-        return true;
+        return isValid;
     }
 
 }
