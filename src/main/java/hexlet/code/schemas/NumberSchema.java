@@ -22,10 +22,7 @@ public final class NumberSchema extends BaseSchema {
     }
 
     @Override
-    public boolean toRunChecks(Object numberToValidate) {
-        boolean isValid = true;
-
-        isValid = isRequired(numberToValidate, isValid);
+    public boolean toRunOtherChecks(Object numberToValidate, boolean isValid) {
 
         isValid = isPositive(numberToValidate, isValid);
 
@@ -34,7 +31,8 @@ public final class NumberSchema extends BaseSchema {
         return isValid;
     }
 
-    private boolean isRequired(Object numberToValidate, boolean isValid) {
+    @Override
+    public boolean isRequired(Object numberToValidate, boolean isValid) {
         if (this.getCheckList().contains(SchemaChecks.required)) {
             if (!(numberToValidate instanceof Integer)) {
                 return false;

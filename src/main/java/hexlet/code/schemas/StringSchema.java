@@ -22,10 +22,7 @@ public final class StringSchema extends BaseSchema {
     }
 
     @Override
-    public boolean toRunChecks(Object stringToValidate) {
-        boolean isValid = true;
-
-        isValid = isRequired(stringToValidate, isValid);
+    public boolean toRunOtherChecks(Object stringToValidate, boolean isValid) {
 
         isValid = isContain(stringToValidate, isValid);
 
@@ -34,7 +31,8 @@ public final class StringSchema extends BaseSchema {
         return isValid;
     }
 
-    private boolean isRequired(Object stringToValidate, boolean isValid) {
+    @Override
+    public boolean isRequired(Object stringToValidate, boolean isValid) {
         if (this.getCheckList().contains(SchemaChecks.required)) {
             if (stringToValidate == null) {
                 return false;

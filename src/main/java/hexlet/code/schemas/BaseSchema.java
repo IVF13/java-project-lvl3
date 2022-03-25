@@ -11,10 +11,18 @@ public abstract class BaseSchema {
     }
 
     public final boolean isValid(Object objectToValidate) {
-        return this.toRunChecks(objectToValidate);
+        boolean isValid = true;
+
+        isValid = this.isRequired(objectToValidate, isValid);
+
+        isValid = this.toRunOtherChecks(objectToValidate, isValid);
+
+        return isValid;
     }
 
-    public abstract boolean toRunChecks(Object stringToValidate);
+    public abstract boolean isRequired(Object stringToValidate, boolean isValid);
+
+    public abstract boolean toRunOtherChecks(Object stringToValidate, boolean isValid);
 
     public final List<SchemaChecks> getCheckList() {
         return this.checkList;
