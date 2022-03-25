@@ -7,8 +7,7 @@ import java.util.List;
 
 public final class NumberSchema {
     private final List<NumberSchemaChecks> checkList = new ArrayList<>();
-    private int lowerThreshold;
-    private int upperThreshold;
+    private final int[] thresholdValues = new int[2];
     private final NumberSchemaValidator validator; //
 
     public NumberSchema() {
@@ -16,7 +15,7 @@ public final class NumberSchema {
     }
 
     public boolean isValid(Object numberToValidate) {
-        return validator.isValid(checkList, lowerThreshold, upperThreshold, numberToValidate);
+        return validator.isValid(checkList, thresholdValues, numberToValidate);
     }
 
     public void required() {
@@ -29,11 +28,11 @@ public final class NumberSchema {
         return this;
     }
 
-    public NumberSchema range(int lowerNum, int upperNum) {
+    public NumberSchema range(int lowerThreshold, int upperThreshold) {
         checkList.add(NumberSchemaChecks.required);
         checkList.add(NumberSchemaChecks.range);
-        this.lowerThreshold = lowerNum;
-        this.upperThreshold = upperNum;
+        this.thresholdValues[0] = lowerThreshold;
+        this.thresholdValues[1] = upperThreshold;
         return this;
     }
 

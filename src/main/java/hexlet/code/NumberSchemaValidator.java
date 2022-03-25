@@ -7,14 +7,14 @@ import java.util.List;
 public final class NumberSchemaValidator {
 
     public boolean isValid(List<NumberSchemaChecks> checkList,
-                           int lowerThreshold, int upperThreshold, Object numberToValidate) {
+                           int[] thresholdValues, Object numberToValidate) {
         boolean isValid = true;
 
         isValid = isRequired(checkList, numberToValidate, isValid);
 
         isValid = isPositive(checkList, numberToValidate, isValid);
 
-        isValid = isInRange(checkList, lowerThreshold, upperThreshold, numberToValidate, isValid);
+        isValid = isInRange(checkList, thresholdValues, numberToValidate, isValid);
 
         return isValid;
     }
@@ -40,10 +40,10 @@ public final class NumberSchemaValidator {
     }
 
     private boolean isInRange(List<NumberSchemaChecks> checkList,
-                              int lowerThreshold, int upperThreshold, Object numberToValidate, boolean isValid) {
+                              int[] thresholdValues, Object numberToValidate, boolean isValid) {
         if (checkList.contains(NumberSchemaChecks.range)) {
-            if (numberToValidate instanceof Integer && !((Integer) numberToValidate >= lowerThreshold
-                    && (Integer) numberToValidate <= upperThreshold)) {
+            if (numberToValidate instanceof Integer && !((Integer) numberToValidate >= thresholdValues[0]
+                    && (Integer) numberToValidate <= thresholdValues[1])) {
                 return false;
             }
         }
