@@ -1,5 +1,6 @@
 package hexlet.code;
 
+import hexlet.code.schemas.NumberSchema;
 import hexlet.code.schemas.StringSchema;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,84 +10,154 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class AppTest {
-    private StringSchema schema;
+    private StringSchema stringSchema;
+    private NumberSchema numberSchema;
+    private final Validator validator = new Validator();
 
     @BeforeEach
-    void toPrepareForTests() {
-        Validator validator = new Validator();
-        schema = validator.string();
+    void toPrepareForStringSchemaTests() {
+        stringSchema = validator.string();
     }
 
     @Test
     void stringSchemaWthOutOptionsTest() {
-        assertTrue(schema.isValid(""));
-        assertTrue(schema.isValid(null));
-        assertTrue(schema.isValid("hexlet"));
-        assertTrue(schema.isValid("All values is valid"));
+        assertTrue(stringSchema.isValid(""));
+        assertTrue(stringSchema.isValid(null));
+        assertTrue(stringSchema.isValid("hexlet"));
+        assertTrue(stringSchema.isValid("All values is valid"));
     }
 
     @Test
     void stringSchemaRequiredTest() {
-        assertTrue(schema.isValid(""));
-        assertTrue(schema.isValid(null));
+        assertTrue(stringSchema.isValid(""));
+        assertTrue(stringSchema.isValid(null));
 
-        schema.required();
+        stringSchema.required();
 
-        assertTrue(schema.isValid("what does the fox say"));
-        assertTrue(schema.isValid("hexlet"));
-        assertFalse(schema.isValid(null));
-        assertFalse(schema.isValid(""));
+        assertTrue(stringSchema.isValid("what does the fox say"));
+        assertTrue(stringSchema.isValid("hexlet"));
+        assertFalse(stringSchema.isValid(null));
+        assertFalse(stringSchema.isValid(""));
     }
 
     @Test
     void stringSchemaContainsTest() {
-        assertTrue(schema.contains("what").isValid("what does the fox say"));
-        assertFalse(schema.contains("whatthe").isValid("what does the fox say"));
+        assertTrue(stringSchema.contains("what").isValid("what does the fox say"));
+        assertFalse(stringSchema.contains("whatthe").isValid("what does the fox say"));
 
-        assertFalse(schema.isValid("what does the fox say"));
-        assertTrue(schema.isValid("what whatthe"));
-        assertFalse(schema.isValid(null));
+        assertFalse(stringSchema.isValid("what does the fox say"));
+        assertTrue(stringSchema.isValid("what whatthe"));
+        assertFalse(stringSchema.isValid(null));
     }
 
     @Test
     void stringSchemaMinLengthTest() {
         final int minLength = 3;
 
-        assertTrue(schema.minLength(minLength).isValid("whatthe"));
-        assertTrue(schema.isValid("lol"));
-        assertFalse(schema.isValid(null));
+        assertTrue(stringSchema.minLength(minLength).isValid("whatthe"));
+        assertTrue(stringSchema.isValid("lol"));
+        assertFalse(stringSchema.isValid(null));
     }
 
     @Test
     void stringSchemaAllOptionsTest() {
         final int minLength = 3;
 
-        assertTrue(schema.isValid(""));
-        assertTrue(schema.isValid(null));
+        assertTrue(stringSchema.isValid(""));
+        assertTrue(stringSchema.isValid(null));
 
-        schema.required();
+        stringSchema.required();
 
-        assertTrue(schema.isValid("what does the fox say"));
-        assertTrue(schema.isValid("hexlet"));
-        assertFalse(schema.isValid(null));
-        assertFalse(schema.isValid(""));
+        assertTrue(stringSchema.isValid("what does the fox say"));
+        assertTrue(stringSchema.isValid("hexlet"));
+        assertFalse(stringSchema.isValid(null));
+        assertFalse(stringSchema.isValid(""));
 
-        schema.contains("what");
+        stringSchema.contains("what");
 
-        assertTrue(schema.isValid("what does the fox say"));
+        assertTrue(stringSchema.isValid("what does the fox say"));
 
-        schema.contains("whatthe");
+        stringSchema.contains("whatthe");
 
-        assertFalse(schema.isValid("what does the fox say"));
-        assertTrue(schema.isValid("what whatthe"));
-        assertFalse(schema.isValid(null));
+        assertFalse(stringSchema.isValid("what does the fox say"));
+        assertTrue(stringSchema.isValid("what whatthe"));
+        assertFalse(stringSchema.isValid(null));
 
-        schema.minLength(minLength);
+        stringSchema.minLength(minLength);
 
-        assertTrue(schema.isValid("whatthe"));
-        assertFalse(schema.isValid("lol"));
-        assertFalse(schema.isValid("l"));
-        assertFalse(schema.isValid(null));
+        assertTrue(stringSchema.isValid("whatthe"));
+        assertFalse(stringSchema.isValid("lol"));
+        assertFalse(stringSchema.isValid("l"));
+        assertFalse(stringSchema.isValid(null));
+    }
+
+    @BeforeEach
+    void toPrepareForNumberSchemaTests() {
+        numberSchema = validator.number();
+    }
+
+    @Test
+    void numberSchemaRequiredTest() {
+        assertTrue(numberSchema.isValid(null));
+
+        numberSchema.required();
+
+        assertFalse(numberSchema.isValid(null));
+        assertTrue(numberSchema.isValid(10));
+        assertFalse(numberSchema.isValid("5"));
+    }
+
+    @Test
+    void numberSchemaPositiveTest() {
+        assertTrue(numberSchema.positive().isValid(10));
+        assertFalse(numberSchema.isValid(-10));
+        assertFalse(numberSchema.isValid("f"));
+        assertFalse(numberSchema.isValid(null));
+    }
+
+    @Test
+    void numberSchemaRangeTest() {
+        numberSchema.range(5, 10);
+
+        assertTrue(numberSchema.isValid(5));
+        assertTrue(numberSchema.isValid(8));
+        assertTrue(numberSchema.isValid(10));
+        assertFalse(numberSchema.isValid(4));
+        assertFalse(numberSchema.isValid(11));
+        assertFalse(numberSchema.isValid(null));
+        assertFalse(numberSchema.isValid("t"));
+    }
+
+    @Test
+    void numberSchemaAllOptionsTest() {
+        assertTrue(numberSchema.isValid(-10));
+        assertTrue(numberSchema.isValid(10));
+        assertTrue(numberSchema.isValid("5"));
+        assertTrue(numberSchema.isValid(null));
+
+        numberSchema.required();
+
+        assertTrue(numberSchema.isValid(-10));
+        assertTrue(numberSchema.isValid(10));
+        assertFalse(numberSchema.isValid("5"));
+        assertFalse(numberSchema.isValid(null));
+
+        numberSchema.positive();
+
+        assertTrue(numberSchema.isValid(10));
+        assertFalse(numberSchema.isValid(-10));
+        assertFalse(numberSchema.isValid("f"));
+        assertFalse(numberSchema.isValid(null));
+
+        numberSchema.range(5, 10);
+
+        assertTrue(numberSchema.isValid(5));
+        assertTrue(numberSchema.isValid(8));
+        assertTrue(numberSchema.isValid(10));
+        assertFalse(numberSchema.isValid(-4));
+        assertFalse(numberSchema.isValid(11));
+        assertFalse(numberSchema.isValid(null));
+        assertFalse(numberSchema.isValid("t"));
     }
 
 

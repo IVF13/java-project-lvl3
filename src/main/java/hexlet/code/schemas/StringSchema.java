@@ -24,12 +24,14 @@ public final class StringSchema {
     }
 
     public StringSchema minLength(int length) {
+        checkList.add(StringSchemaChecks.required);
         checkList.add(StringSchemaChecks.minLength);
         this.minLength = length;
         return this;
     }
 
     public StringSchema contains(String content) {
+        checkList.add(StringSchemaChecks.required);
         checkList.add(StringSchemaChecks.contains);
         stringsMustBeContained.add(content);
         return this;
