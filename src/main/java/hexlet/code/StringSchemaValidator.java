@@ -34,7 +34,7 @@ public final class StringSchemaValidator extends Validator {
                               String stringToValidate, boolean isValid) {
         if (checkList.contains(StringSchemaChecks.contains)) {
             for (String content : stringsMustBeContained) {
-                if (!stringToValidate.contains(content)) {
+                if (stringToValidate == null || !stringToValidate.contains(content)) {
                     return false;
                 }
             }
@@ -45,7 +45,7 @@ public final class StringSchemaValidator extends Validator {
     private boolean isLongEnough(List<StringSchemaChecks> checkList, int minLength,
                                  String stringToValidate, boolean isValid) {
         if (checkList.contains(StringSchemaChecks.minLength)) {
-            if (stringToValidate.length() < minLength) {
+            if (stringToValidate == null || stringToValidate.length() < minLength) {
                 return false;
             }
         }
