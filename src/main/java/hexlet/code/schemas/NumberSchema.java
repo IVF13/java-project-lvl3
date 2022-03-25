@@ -1,7 +1,5 @@
 package hexlet.code.schemas;
 
-import java.util.List;
-
 public final class NumberSchema extends BaseSchema {
     private final int[] thresholdValues = new int[2];
 
@@ -10,34 +8,34 @@ public final class NumberSchema extends BaseSchema {
     }
 
     public NumberSchema positive() {
-        getCheckList().add(SchemaChecks.required);
+        this.required();
         getCheckList().add(SchemaChecks.positive);
         return this;
     }
 
     public NumberSchema range(int lowerThreshold, int upperThreshold) {
-        getCheckList().add(SchemaChecks.required);
+        this.required();
         getCheckList().add(SchemaChecks.range);
         this.thresholdValues[0] = lowerThreshold;
         this.thresholdValues[1] = upperThreshold;
         return this;
     }
 
-    static boolean isValid(List<SchemaChecks> checkList,
-                           int[] thresholdValues, Object numberToValidate) {
+    @Override
+    public boolean toRunChecks(Object numberToValidate) {
         boolean isValid = true;
 
-        isValid = isRequired(checkList, numberToValidate, isValid);
+        isValid = isRequired(numberToValidate, isValid);
 
-        isValid = isPositive(checkList, numberToValidate, isValid);
+        isValid = isPositive(numberToValidate, isValid);
 
-        isValid = isInRange(checkList, thresholdValues, numberToValidate, isValid);
+        isValid = isInRange(numberToValidate, isValid);
 
         return isValid;
     }
 
-    private static boolean isRequired(List<SchemaChecks> checkList, Object numberToValidate, boolean isValid) {
-        if (checkList.contains(SchemaChecks.required)) {
+    private boolean isRequired(Object numberToValidate, boolean isValid) {
+        if (this.getCheckList().contains(SchemaChecks.required)) {
             if (!(numberToValidate instanceof Integer)) {
                 return false;
             }
@@ -46,8 +44,8 @@ public final class NumberSchema extends BaseSchema {
         return isValid;
     }
 
-    private static boolean isPositive(List<SchemaChecks> checkList, Object numberToValidate, boolean isValid) {
-        if (checkList.contains(SchemaChecks.positive)) {
+    private boolean isPositive(Object numberToValidate, boolean isValid) {
+        if (this.getCheckList().contains(SchemaChecks.positive)) {
             if (numberToValidate instanceof Integer && (Integer) numberToValidate <= 0) {
                 return false;
             }
@@ -56,11 +54,10 @@ public final class NumberSchema extends BaseSchema {
         return isValid;
     }
 
-    private static boolean isInRange(List<SchemaChecks> checkList,
-                                     int[] thresholdValues, Object numberToValidate, boolean isValid) {
-        if (checkList.contains(SchemaChecks.range)) {
-            if (numberToValidate instanceof Integer && !((Integer) numberToValidate >= thresholdValues[0]
-                    && (Integer) numberToValidate <= thresholdValues[1])) {
+    private boolean isInRange(Object numberToValidate, boolean isValid) {
+        if (this.getCheckList().contains(SchemaChecks.range)) {
+            if (numberToValidate instanceof Integer && !((Integer) numberToValidate >= getThresholdValues()[0]
+                    && (Integer) numberToValidate <= getThresholdValues()[1])) {
                 return false;
             }
         }

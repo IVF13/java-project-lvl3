@@ -3,7 +3,7 @@ package hexlet.code.schemas;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseSchema {
+public abstract class BaseSchema {
     private final List<SchemaChecks> checkList = new ArrayList<>();
 
     public final void required() {
@@ -11,15 +11,10 @@ public class BaseSchema {
     }
 
     public final boolean isValid(Object objectToValidate) {
-        if (this instanceof NumberSchema) {
-            return NumberSchema.isValid(getCheckList(), ((NumberSchema) this).getThresholdValues(), objectToValidate);
-        } else if (this instanceof StringSchema) {
-            return StringSchema.isValid(getCheckList(), ((StringSchema) this).getStringsMustBeContained(),
-                    ((StringSchema) this).getMinLength(), objectToValidate);
-        }
-
-        return true;
+        return this.toRunChecks(objectToValidate);
     }
+
+    public abstract boolean toRunChecks(Object stringToValidate);
 
     public final List<SchemaChecks> getCheckList() {
         return this.checkList;
