@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class AppTest {
@@ -18,74 +20,74 @@ class AppTest {
 
     @Test
     void stringSchemaWthOutOptionsTest() {
-        assertEquals(true, schema.isValid(""));
-        assertEquals(true, schema.isValid(null));
-        assertEquals(true, schema.isValid("hexlet"));
-        assertEquals(true, schema.isValid("All values is valid"));
+        assertTrue(schema.isValid(""));
+        assertTrue(schema.isValid(null));
+        assertTrue(schema.isValid("hexlet"));
+        assertTrue(schema.isValid("All values is valid"));
     }
 
     @Test
     void stringSchemaRequiredTest() {
-        assertEquals(true, schema.isValid(""));
-        assertEquals(true, schema.isValid(null));
+        assertTrue(schema.isValid(""));
+        assertTrue(schema.isValid(null));
 
         schema.required();
 
-        assertEquals(true, schema.isValid("what does the fox say"));
-        assertEquals(true, schema.isValid("hexlet"));
-        assertEquals(false, schema.isValid(null));
-        assertEquals(false, schema.isValid(""));
+        assertTrue(schema.isValid("what does the fox say"));
+        assertTrue(schema.isValid("hexlet"));
+        assertFalse(schema.isValid(null));
+        assertFalse(schema.isValid(""));
     }
 
     @Test
     void stringSchemaContainsTest() {
-        assertEquals(true, schema.contains("what").isValid("what does the fox say"));
-        assertEquals(false, schema.contains("whatthe").isValid("what does the fox say"));
+        assertTrue(schema.contains("what").isValid("what does the fox say"));
+        assertFalse(schema.contains("whatthe").isValid("what does the fox say"));
 
-        assertEquals(false, schema.isValid("what does the fox say"));
-        assertEquals(true, schema.isValid("what whatthe"));
-        assertEquals(false, schema.isValid(null));
+        assertFalse(schema.isValid("what does the fox say"));
+        assertTrue(schema.isValid("what whatthe"));
+        assertFalse(schema.isValid(null));
     }
 
     @Test
     void stringSchemaMinLengthTest() {
         final int minLength = 3;
 
-        assertEquals(true, schema.minLength(minLength).isValid("whatthe"));
-        assertEquals(true, schema.isValid("lol"));
-        assertEquals(false, schema.isValid(null));
+        assertTrue(schema.minLength(minLength).isValid("whatthe"));
+        assertTrue(schema.isValid("lol"));
+        assertFalse(schema.isValid(null));
     }
 
     @Test
     void stringSchemaAllOptionsTest() {
         final int minLength = 3;
 
-        assertEquals(true, schema.isValid(""));
-        assertEquals(true, schema.isValid(null));
+        assertTrue(schema.isValid(""));
+        assertTrue(schema.isValid(null));
 
         schema.required();
 
-        assertEquals(true, schema.isValid("what does the fox say"));
-        assertEquals(true, schema.isValid("hexlet"));
-        assertEquals(false, schema.isValid(null));
-        assertEquals(false, schema.isValid(""));
+        assertTrue(schema.isValid("what does the fox say"));
+        assertTrue(schema.isValid("hexlet"));
+        assertFalse(schema.isValid(null));
+        assertFalse(schema.isValid(""));
 
         schema.contains("what");
 
-        assertEquals(true, schema.isValid("what does the fox say"));
+        assertTrue(schema.isValid("what does the fox say"));
 
         schema.contains("whatthe");
 
-        assertEquals(false, schema.isValid("what does the fox say"));
-        assertEquals(true, schema.isValid("what whatthe"));
-        assertEquals(false, schema.isValid(null));
+        assertFalse(schema.isValid("what does the fox say"));
+        assertTrue(schema.isValid("what whatthe"));
+        assertFalse(schema.isValid(null));
 
         schema.minLength(minLength);
 
-        assertEquals(true, schema.isValid("whatthe"));
-        assertEquals(false, schema.isValid("lol"));
-        assertEquals(false, schema.isValid("l"));
-        assertEquals(false, schema.isValid(null));
+        assertTrue(schema.isValid("whatthe"));
+        assertFalse(schema.isValid("lol"));
+        assertFalse(schema.isValid("l"));
+        assertFalse(schema.isValid(null));
     }
 
 
