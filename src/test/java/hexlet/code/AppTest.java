@@ -117,7 +117,7 @@ class AppTest {
 
     @Test
     void numberSchemaRangeTest() {
-        numberSchema.range(5, 10);
+        assertTrue(numberSchema.range(5, 10).isValid(6));
 
         assertTrue(numberSchema.isValid(5));
         assertTrue(numberSchema.isValid(8));
