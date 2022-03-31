@@ -45,7 +45,7 @@ class AppTest {
 
         assertTrue(stringSchema.isValid("what does the fox say"));
         assertTrue(stringSchema.isValid("hexlet"));
-        assertFalse(stringSchema.isValid(null));
+        assertFalse(stringSchema.isValid(5));
         assertFalse(stringSchema.isValid(""));
         assertFalse(stringSchema.isValid(new ArrayList<>()));
     }
