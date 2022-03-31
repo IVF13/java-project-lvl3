@@ -1,10 +1,11 @@
 package hexlet.code.schemas;
 
-public enum SchemaChecks {
+public enum SchemasChecks {
     required,
     contains,
     minLength,
     positive,
     range,
-    sizeof
+    sizeof,
+    shape
 }

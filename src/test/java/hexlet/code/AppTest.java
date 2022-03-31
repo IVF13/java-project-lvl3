@@ -1,5 +1,6 @@
 package hexlet.code;
 
+import hexlet.code.schemas.BaseSchema;
 import hexlet.code.schemas.MapSchema;
 import hexlet.code.schemas.NumberSchema;
 import hexlet.code.schemas.StringSchema;
@@ -201,7 +202,33 @@ class AppTest {
 
         assertFalse(mapSchema.isValid(null));
         assertFalse(mapSchema.isValid(""));
+        assertFalse(mapSchema.isValid(new ArrayList<>()));
+    }
 
+    @Test
+    void mapSchemaShapeTest() {
+        Map<String, BaseSchema> schemas = new HashMap<>();
+        schemas.put("name", validator.string().required());
+        schemas.put("age", validator.number().positive());
+        mapSchema.shape(schemas);
+
+        Map<String, Object> human1 = new HashMap<>();
+        human1.put("name", "Kolya");
+        human1.put("age", 100);
+        assertTrue(mapSchema.isValid(human1));
+
+        Map<String, Object> human2 = new HashMap<>();
+        human2.put("name", "");
+        human2.put("age", null);
+        assertFalse(mapSchema.isValid(human2));
+
+        Map<String, Object> human3 = new HashMap<>();
+        human3.put("name", "Valya");
+        human3.put("age", -5);
+        assertFalse(mapSchema.isValid(human3));
+
+        assertFalse(mapSchema.isValid(""));
+        assertFalse(mapSchema.isValid(null));
         assertFalse(mapSchema.isValid(new ArrayList<>()));
     }
 

@@ -9,13 +9,13 @@ public final class NumberSchema extends BaseSchema {
 
     public NumberSchema positive() {
         this.required();
-        getCheckList().add(SchemaChecks.positive);
+        getCheckList().add(SchemasChecks.positive);
         return this;
     }
 
     public NumberSchema range(int lowerThreshold, int upperThreshold) {
         this.required();
-        getCheckList().add(SchemaChecks.range);
+        getCheckList().add(SchemasChecks.range);
         this.thresholdValues[0] = lowerThreshold;
         this.thresholdValues[1] = upperThreshold;
         return this;
@@ -33,7 +33,7 @@ public final class NumberSchema extends BaseSchema {
 
     @Override
     public boolean isRequired(Object numberToValidate, boolean isValid) {
-        if (this.getCheckList().contains(SchemaChecks.required)) {
+        if (this.getCheckList().contains(SchemasChecks.required)) {
             if (!(numberToValidate instanceof Integer)) {
                 return false;
             }
@@ -43,7 +43,7 @@ public final class NumberSchema extends BaseSchema {
     }
 
     private boolean isPositive(Object numberToValidate, boolean isValid) {
-        if (this.getCheckList().contains(SchemaChecks.positive)) {
+        if (this.getCheckList().contains(SchemasChecks.positive)) {
             if ((Integer) numberToValidate <= 0) {
                 return false;
             }
@@ -53,7 +53,7 @@ public final class NumberSchema extends BaseSchema {
     }
 
     private boolean isInRange(Object numberToValidate, boolean isValid) {
-        if (this.getCheckList().contains(SchemaChecks.range)) {
+        if (this.getCheckList().contains(SchemasChecks.range)) {
             if (!((Integer) numberToValidate >= getThresholdValues()[0]
                     && (Integer) numberToValidate <= getThresholdValues()[1])) {
                 return false;
