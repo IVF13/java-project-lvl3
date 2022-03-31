@@ -7,7 +7,7 @@
 
 Data Validator - library that helps to check data correctness, and it's compliance with established criteria. The
 library can work with different data types. Using the tools of this library, it is easy to check the Integer, String and
-Map data types. It can be integrated into a service that accepts user input. The yup library was used as a reference for
+Map data types. For example, it can be integrated into a service that accepts user input. The yup library was used as a reference for
 this one.
 
 #### Functional:
