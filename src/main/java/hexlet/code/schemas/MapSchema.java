@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class MapSchema extends BaseSchema {
-    private Map<String, BaseSchema> schemasStorage = new HashMap<>();
+    private Map<String, BaseSchema> schemasStorage;
     private int sizeOf;
 
     public MapSchema sizeof(int size) {
@@ -71,6 +71,5 @@ public final class MapSchema extends BaseSchema {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.convertValue(object, Map.class);
     }
-
 
 }
