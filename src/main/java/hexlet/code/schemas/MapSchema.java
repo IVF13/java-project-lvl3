@@ -1,8 +1,6 @@
 package hexlet.code.schemas;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.HashMap;
 import java.util.Map;
 
 public final class MapSchema extends BaseSchema {
