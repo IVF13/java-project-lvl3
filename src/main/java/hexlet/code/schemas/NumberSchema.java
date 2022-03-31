@@ -44,7 +44,7 @@ public final class NumberSchema extends BaseSchema {
 
     private boolean isPositive(Object numberToValidate, boolean isValid) {
         if (this.getCheckList().contains(SchemaChecks.positive)) {
-            if (numberToValidate instanceof Integer && (Integer) numberToValidate <= 0) {
+            if ((Integer) numberToValidate <= 0) {
                 return false;
             }
         }
@@ -54,7 +54,7 @@ public final class NumberSchema extends BaseSchema {
 
     private boolean isInRange(Object numberToValidate, boolean isValid) {
         if (this.getCheckList().contains(SchemaChecks.range)) {
-            if (numberToValidate instanceof Integer && !((Integer) numberToValidate >= getThresholdValues()[0]
+            if (!((Integer) numberToValidate >= getThresholdValues()[0]
                     && (Integer) numberToValidate <= getThresholdValues()[1])) {
                 return false;
             }

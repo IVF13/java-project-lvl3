@@ -15,12 +15,16 @@ public abstract class BaseSchema {
 
         isValid = this.isRequired(objectToValidate, isValid);
 
+        if (!isValid) {
+            return isValid;
+        }
+
         isValid = this.toRunOtherChecks(objectToValidate, isValid);
 
         return isValid;
     }
 
-    public abstract boolean isRequired(Object stringToValidate, boolean isValid);
+    public abstract boolean isRequired(Object objectToValidate, boolean isValid);
 
     public abstract boolean toRunOtherChecks(Object stringToValidate, boolean isValid);
 

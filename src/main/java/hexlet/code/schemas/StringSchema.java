@@ -34,7 +34,7 @@ public final class StringSchema extends BaseSchema {
     @Override
     public boolean isRequired(Object stringToValidate, boolean isValid) {
         if (this.getCheckList().contains(SchemaChecks.required)) {
-            if (stringToValidate == null) {
+            if (!(stringToValidate instanceof String)) {
                 return false;
             } else if (stringToValidate.toString().isEmpty()) {
                 return false;
@@ -46,7 +46,7 @@ public final class StringSchema extends BaseSchema {
     private boolean isContain(Object stringToValidate, boolean isValid) {
         if (this.getCheckList().contains(SchemaChecks.contains)) {
             for (String content : getStringsMustBeContained()) {
-                if (stringToValidate == null || !stringToValidate.toString().contains(content)) {
+                if (!stringToValidate.toString().contains(content)) {
                     return false;
                 }
             }
@@ -56,7 +56,7 @@ public final class StringSchema extends BaseSchema {
 
     private boolean isLongEnough(Object stringToValidate, boolean isValid) {
         if (this.getCheckList().contains(SchemaChecks.minLength)) {
-            if (stringToValidate == null || stringToValidate.toString().length() < getMinLength()) {
+            if (stringToValidate.toString().length() < getMinLength()) {
                 return false;
             }
         }

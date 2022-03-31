@@ -5,5 +5,6 @@ public enum SchemaChecks {
     contains,
     minLength,
     positive,
-    range
+    range,
+    sizeof
 }

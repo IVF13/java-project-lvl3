@@ -1,9 +1,14 @@
 package hexlet.code;
 
+import hexlet.code.schemas.MapSchema;
 import hexlet.code.schemas.NumberSchema;
 import hexlet.code.schemas.StringSchema;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -12,11 +17,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class AppTest {
     private StringSchema stringSchema;
     private NumberSchema numberSchema;
+    private MapSchema mapSchema;
     private final Validator validator = new Validator();
 
     @BeforeEach
-    void toPrepareForStringSchemaTests() {
+    void toPrepareForValidatorTests() {
         stringSchema = validator.string();
+        numberSchema = validator.number();
+        mapSchema = validator.map();
     }
 
     @Test
@@ -38,6 +46,7 @@ class AppTest {
         assertTrue(stringSchema.isValid("hexlet"));
         assertFalse(stringSchema.isValid(null));
         assertFalse(stringSchema.isValid(""));
+        assertFalse(stringSchema.isValid(new ArrayList<>()));
     }
 
     @Test
@@ -91,11 +100,6 @@ class AppTest {
         assertFalse(stringSchema.isValid(null));
     }
 
-    @BeforeEach
-    void toPrepareForNumberSchemaTests() {
-        numberSchema = validator.number();
-    }
-
     @Test
     void numberSchemaRequiredTest() {
         assertTrue(numberSchema.isValid(null));
@@ -105,6 +109,7 @@ class AppTest {
         assertFalse(numberSchema.isValid(null));
         assertTrue(numberSchema.isValid(10));
         assertFalse(numberSchema.isValid("5"));
+        assertFalse(numberSchema.isValid(new ArrayList<>()));
     }
 
     @Test
@@ -160,5 +165,44 @@ class AppTest {
         assertFalse(numberSchema.isValid("t"));
     }
 
+    @Test
+    void mapSchemaWthOutOptionsTest() {
+        assertTrue(mapSchema.isValid(null));
+    }
+
+    @Test
+    void mapSchemaRequiredTest() {
+        assertTrue(mapSchema.isValid(""));
+        assertTrue(mapSchema.isValid(null));
+
+        mapSchema.required();
+
+        assertFalse(mapSchema.isValid("hexlet"));
+        assertFalse(mapSchema.isValid(null));
+        assertFalse(mapSchema.isValid(3));
+        assertFalse(mapSchema.isValid(new ArrayList<>()));
+        assertTrue(mapSchema.isValid(new HashMap<>()));
+    }
+
+    @Test
+    void mapSchemaSizeOfTest() {
+        Map<String, String> data = new HashMap<>();
+        data.put("key1", "value1");
+
+        assertTrue(mapSchema.isValid(data));
+
+        mapSchema.sizeof(2);
+
+        assertFalse(mapSchema.isValid(data));
+
+        data.put("key2", "value2");
+
+        assertTrue(mapSchema.isValid(data));
+
+        assertFalse(mapSchema.isValid(null));
+        assertFalse(mapSchema.isValid(""));
+
+        assertFalse(mapSchema.isValid(new ArrayList<>()));
+    }
 
 }
