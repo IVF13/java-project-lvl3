@@ -6,11 +6,6 @@ import java.util.List;
 public abstract class BaseSchema {
     private final List<SchemasChecks> checkList = new ArrayList<>();
 
-    public final BaseSchema required() {
-        getCheckList().add(SchemasChecks.required);
-        return this;
-    }
-
     public final boolean isValid(Object objectToValidate) {
         boolean isValid = true;
 
@@ -21,7 +16,7 @@ public abstract class BaseSchema {
                 return isValid;
             }
 
-            isValid = this.toRunOtherChecks(objectToValidate, isValid);
+            isValid = this.isPassesOtherTests(objectToValidate, isValid);
         }
 
         return isValid;
@@ -29,7 +24,7 @@ public abstract class BaseSchema {
 
     public abstract boolean isRequired(Object objectToValidate, boolean isValid);
 
-    public abstract boolean toRunOtherChecks(Object stringToValidate, boolean isValid);
+    public abstract boolean isPassesOtherTests(Object stringToValidate, boolean isValid);
 
     public final List<SchemasChecks> getCheckList() {
         return this.checkList;

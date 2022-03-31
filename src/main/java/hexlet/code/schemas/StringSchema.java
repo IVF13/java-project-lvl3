@@ -7,6 +7,11 @@ public final class StringSchema extends BaseSchema {
     private final List<String> stringsMustBeContained = new ArrayList<>();
     private int minLength = 0;
 
+    public StringSchema required() {
+        getCheckList().add(SchemasChecks.required);
+        return this;
+    }
+
     public StringSchema minLength(int length) {
         this.required();
         getCheckList().add(SchemasChecks.minLength);
@@ -22,7 +27,7 @@ public final class StringSchema extends BaseSchema {
     }
 
     @Override
-    public boolean toRunOtherChecks(Object stringToValidate, boolean isValid) {
+    public boolean isPassesOtherTests(Object stringToValidate, boolean isValid) {
 
         isValid = isContain(stringToValidate, isValid);
 

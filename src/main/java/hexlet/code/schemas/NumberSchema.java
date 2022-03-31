@@ -3,8 +3,9 @@ package hexlet.code.schemas;
 public final class NumberSchema extends BaseSchema {
     private final int[] thresholdValues = new int[2];
 
-    public int[] getThresholdValues() {
-        return thresholdValues;
+    public NumberSchema required() {
+        getCheckList().add(SchemasChecks.required);
+        return this;
     }
 
     public NumberSchema positive() {
@@ -22,7 +23,7 @@ public final class NumberSchema extends BaseSchema {
     }
 
     @Override
-    public boolean toRunOtherChecks(Object numberToValidate, boolean isValid) {
+    public boolean isPassesOtherTests(Object numberToValidate, boolean isValid) {
 
         isValid = isPositive(numberToValidate, isValid);
 
@@ -61,6 +62,10 @@ public final class NumberSchema extends BaseSchema {
         }
 
         return isValid;
+    }
+
+    public int[] getThresholdValues() {
+        return thresholdValues;
     }
 
 }

@@ -1,11 +1,17 @@
 package hexlet.code.schemas;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Map;
 
 public final class MapSchema extends BaseSchema {
     private Map<String, BaseSchema> schemasStorage;
     private int sizeOf;
+
+    public MapSchema required() {
+        getCheckList().add(SchemasChecks.required);
+        return this;
+    }
 
     public MapSchema sizeof(int size) {
         this.required();
@@ -30,7 +36,7 @@ public final class MapSchema extends BaseSchema {
     }
 
     @Override
-    public boolean toRunOtherChecks(Object mapToValidate, boolean isValid) {
+    public boolean isPassesOtherTests(Object mapToValidate, boolean isValid) {
         isValid = isSizeOf(mapToValidate, isValid);
 
         isValid = isMatchTheShape(mapToValidate, isValid);
