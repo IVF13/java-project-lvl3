@@ -1,4 +1,4 @@
-### Data Validator:
+# Data Validator:
 
 [![Actions Status](https://github.com/IVF13/java-project-lvl3/workflows/hexlet-check/badge.svg)](https://github.com/IVF13/java-project-lvl3/actions)
 [![Build workflow](https://github.com/IVF13/java-project-lvl3/actions/workflows/build.yml/badge.svg)](https://github.com/IVF13/java-project-lvl3/actions/workflows/build.yml)
@@ -10,7 +10,7 @@ library can work with different data types. Using the tools of this library, it 
 Map data types. For example, it can be integrated into a service that accepts user input. The yup library was used as a reference for
 this one.
 
-#### Functional:
+## Functional:
 
 ```java
 //Imports:
