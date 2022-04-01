@@ -52,6 +52,7 @@ class AppTest {
 
     @Test
     void stringSchemaContainsTest() {
+        stringSchema.required();
         assertTrue(stringSchema.contains("what").isValid("what does the fox say"));
         assertFalse(stringSchema.contains("whatthe").isValid("what does the fox say"));
 
@@ -63,6 +64,7 @@ class AppTest {
     @Test
     void stringSchemaMinLengthTest() {
         final int minLength = 3;
+        stringSchema.required();
 
         assertTrue(stringSchema.minLength(minLength).isValid("whatthe"));
         assertTrue(stringSchema.isValid("lol"));
@@ -115,6 +117,8 @@ class AppTest {
 
     @Test
     void numberSchemaPositiveTest() {
+        numberSchema.required();
+
         assertTrue(numberSchema.positive().isValid(10));
         assertFalse(numberSchema.isValid(-10));
         assertFalse(numberSchema.isValid("f"));
@@ -123,6 +127,8 @@ class AppTest {
 
     @Test
     void numberSchemaRangeTest() {
+        numberSchema.required();
+
         assertTrue(numberSchema.range(5, 10).isValid(6));
 
         assertTrue(numberSchema.isValid(5));
@@ -192,6 +198,7 @@ class AppTest {
 
         assertTrue(mapSchema.isValid(data));
 
+        mapSchema.required();
         mapSchema.sizeof(2);
 
         assertFalse(mapSchema.isValid(data));
@@ -210,6 +217,8 @@ class AppTest {
         Map<String, BaseSchema> schemas = new HashMap<>();
         schemas.put("name", validator.string().required());
         schemas.put("age", validator.number().positive());
+
+        mapSchema.required();
         mapSchema.shape(schemas);
 
         Map<String, Object> human1 = new HashMap<>();
@@ -218,14 +227,19 @@ class AppTest {
         assertTrue(mapSchema.isValid(human1));
 
         Map<String, Object> human2 = new HashMap<>();
-        human2.put("name", "");
+        human2.put("name", "Maya");
         human2.put("age", null);
-        assertFalse(mapSchema.isValid(human2));
+        assertTrue(mapSchema.isValid(human2));
 
         Map<String, Object> human3 = new HashMap<>();
-        human3.put("name", "Valya");
-        human3.put("age", -5);
+        human3.put("name", "");
+        human3.put("age", null);
         assertFalse(mapSchema.isValid(human3));
+
+        Map<String, Object> human4 = new HashMap<>();
+        human4.put("name", "Valya");
+        human4.put("age", -5);
+        assertFalse(mapSchema.isValid(human4));
 
         assertFalse(mapSchema.isValid(""));
         assertFalse(mapSchema.isValid(null));

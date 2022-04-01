@@ -12,10 +12,6 @@ public abstract class BaseSchema {
         if (!checkList.isEmpty()) {
             isValid = this.isRequired(objectToValidate, isValid);
 
-            if (!isValid) {
-                return isValid;
-            }
-
             isValid = this.isPassesOtherTests(objectToValidate, isValid);
         }
 

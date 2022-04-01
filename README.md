@@ -51,7 +51,6 @@ public void toCheckString(){
 
         //You can combine checks in any order eg("isValid" always is terminal check): 
         stringSchema.required().minLength(5).contains("the").isValid("what does the fox say");
-        //Also, you can use it without "required" option, it includes automatically when you call other checks.
         }
 
 public void toCheckNumber(){
@@ -86,7 +85,6 @@ public void toCheckNumber(){
 
         //You can combine checks in any order eg("isValid" always is terminal check): 
         numberSchema.required().positive().range(5,10).isValid(6);
-        //Also, you can use it without "required" option, it includes automatically when you call other checks.
         }
 
 public void toCheckMap(){
@@ -138,7 +136,6 @@ public void toCheckMap(){
 
         //You can combine checks in any order eg("isValid" always is terminal check): 
         mapSchema.required().sizeof(2).shape(schemas).isValid(human1);
-        //Also, you can use it without "required" option, it includes automatically when you call other checks.
         }
 ```
 
