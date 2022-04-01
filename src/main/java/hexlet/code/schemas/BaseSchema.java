@@ -7,20 +7,12 @@ public abstract class BaseSchema {
     private final List<SchemasChecks> checkList = new ArrayList<>();
 
     public final boolean isValid(Object objectToValidate) {
-        boolean isValid = true;
-
-        if (!checkList.isEmpty()) {
-            isValid = this.isRequired(objectToValidate, isValid);
-
-            isValid = this.isPassesOtherTests(objectToValidate, isValid);
-        }
-
-        return isValid;
+        return this.isPassesTests(objectToValidate, true);
     }
 
     public abstract boolean isRequired(Object objectToValidate, boolean isValid);
 
-    public abstract boolean isPassesOtherTests(Object stringToValidate, boolean isValid);
+    public abstract boolean isPassesTests(Object stringToValidate, boolean isValid);
 
     public final List<SchemasChecks> getCheckList() {
         return this.checkList;

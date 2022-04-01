@@ -34,7 +34,9 @@ public final class MapSchema extends BaseSchema {
     }
 
     @Override
-    public boolean isPassesOtherTests(Object mapToValidate, boolean isValid) {
+    public boolean isPassesTests(Object mapToValidate, boolean isValid) {
+        isValid = isRequired(mapToValidate, isValid);
+
         isValid = isSizeOf(mapToValidate, isValid);
 
         isValid = isMatchTheShape(mapToValidate, isValid);
