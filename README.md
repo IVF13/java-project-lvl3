@@ -28,9 +28,11 @@ public void toCheckString(){
 
         stringSchema.isValid(""); //true
 
-        stringSchema.required(); //adds a check if the input contains an instance of a non-empty string   
-
-
+        stringSchema.required(); //adds a check if the input contains an instance of a non-empty string
+        //When using other options without including "required",
+        //the validator returns true on all data types, 
+        // but submits a data type that belongs to the schema for validation.
+        
         stringSchema.isValid(5); //false
         stringSchema.isValid(""); //false
         stringSchema.isValid(null); //false
@@ -61,7 +63,10 @@ public void toCheckNumber(){
         numberSchema.isValid("lol"); //true
 
         numberSchema.required(); //adds a check if the input contains an instance of Integer
-
+        //When using other options without including "required",
+        //the validator returns true on all data types, 
+        // but submits a data type that belongs to the schema for validation.
+        
         numberSchema.isValid("lol"); //false
         stringSchema.isValid(null); //false
         stringSchema.isValid(new ArrayList<>()); //false
@@ -95,6 +100,9 @@ public void toCheckMap(){
         mapSchema.isValid(""); //true
 
         mapSchema.required(); //adds a check if the input contains an instance of Map
+        //When using other options without including "required",
+        //the validator returns true on all data types, 
+        // but submits a data type that belongs to the schema for validation.
 
         mapSchema.isValid(""); //false
         mapSchema.isValid(new HashMap<>()); //true
@@ -125,14 +133,19 @@ public void toCheckMap(){
         mapSchema.isValid(human1); //true
 
         Map<String, Object> human2=new HashMap<>();
-        human2.put("name","");
+        human2.put("name","Maya");
         human2.put("age",null);
-        mapSchema.isValid(human2); //false
+        mapSchema.isValid(human2); //true
 
-        Map<String, Object> human3=new HashMap<>();
-        human3.put("name","Valya");
-        human3.put("age",-5);
+        Map<String, Object> human3 = new HashMap<>();
+        human3.put("name", "");
+        human3.put("age", null);
         mapSchema.isValid(human3); //false
+
+        Map<String, Object> human4 = new HashMap<>();
+        human4.put("name", "Valya");
+        human4.put("age", -5);
+        mapSchema.isValid(human4); //false
 
         //You can combine checks in any order eg("isValid" always is terminal check): 
         mapSchema.required().sizeof(2).shape(schemas).isValid(human1);
