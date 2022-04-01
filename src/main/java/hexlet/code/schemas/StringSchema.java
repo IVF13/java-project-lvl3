@@ -25,8 +25,7 @@ public final class StringSchema extends BaseSchema {
     }
 
     @Override
-    public boolean isPassesTests(Object stringToValidate, boolean isValid) {
-        isValid = isRequired(stringToValidate, isValid);
+    public boolean isPassesOtherTests(Object stringToValidate, boolean isValid) {
 
         isValid = isContain(stringToValidate, isValid);
 

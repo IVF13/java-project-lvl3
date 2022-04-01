@@ -21,8 +21,7 @@ public final class NumberSchema extends BaseSchema {
     }
 
     @Override
-    public boolean isPassesTests(Object numberToValidate, boolean isValid) {
-        isValid = isRequired(numberToValidate, isValid);
+    public boolean isPassesOtherTests(Object numberToValidate, boolean isValid) {
 
         isValid = isPositive(numberToValidate, isValid);
 
