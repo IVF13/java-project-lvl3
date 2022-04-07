@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseSchema {
-    private final List<SchemasChecks> checkList = new ArrayList<>();
+    protected final List<SchemasChecks> checkList = new ArrayList<>();
 
     public final boolean isValid(Object objectToValidate) {
         boolean isValid = true;
@@ -19,9 +19,5 @@ public abstract class BaseSchema {
     public abstract boolean isRequired(Object objectToValidate, boolean isValid);
 
     public abstract boolean isPassesOtherTests(Object stringToValidate, boolean isValid);
-
-    public final List<SchemasChecks> getCheckList() {
-        return this.checkList;
-    }
 
 }

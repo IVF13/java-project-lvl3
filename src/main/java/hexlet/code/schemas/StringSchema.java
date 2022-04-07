@@ -8,18 +8,18 @@ public final class StringSchema extends BaseSchema {
     private int minLength = 0;
 
     public StringSchema required() {
-        getCheckList().add(SchemasChecks.required);
+        checkList.add(SchemasChecks.REQUIRED);
         return this;
     }
 
     public StringSchema minLength(int length) {
-        getCheckList().add(SchemasChecks.minLength);
+        checkList.add(SchemasChecks.MIN_LENGTH);
         this.minLength = length;
         return this;
     }
 
     public StringSchema contains(String content) {
-        getCheckList().add(SchemasChecks.contains);
+        checkList.add(SchemasChecks.CONTAINS);
         this.stringsMustBeContained.add(content);
         return this;
     }
@@ -36,7 +36,7 @@ public final class StringSchema extends BaseSchema {
 
     @Override
     public boolean isRequired(Object stringToValidate, boolean isValid) {
-        if (this.getCheckList().contains(SchemasChecks.required)
+        if (checkList.contains(SchemasChecks.REQUIRED)
                 && (!(stringToValidate instanceof String) || stringToValidate.toString().isEmpty())) {
             return false;
         }
@@ -44,7 +44,7 @@ public final class StringSchema extends BaseSchema {
     }
 
     private boolean isContain(Object stringToValidate, boolean isValid) {
-        if (this.getCheckList().contains(SchemasChecks.contains) && stringToValidate instanceof String) {
+        if (checkList.contains(SchemasChecks.CONTAINS) && stringToValidate instanceof String) {
             for (String content : getStringsMustBeContained()) {
                 if (!stringToValidate.toString().contains(content)) {
                     return false;
@@ -55,7 +55,7 @@ public final class StringSchema extends BaseSchema {
     }
 
     private boolean isLongEnough(Object stringToValidate, boolean isValid) {
-        if (this.getCheckList().contains(SchemasChecks.minLength) && stringToValidate instanceof String) {
+        if (checkList.contains(SchemasChecks.MIN_LENGTH) && stringToValidate instanceof String) {
             if (stringToValidate.toString().length() < getMinLength()) {
                 return false;
             }

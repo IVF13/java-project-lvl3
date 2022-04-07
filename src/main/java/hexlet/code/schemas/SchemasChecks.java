@@ -1,11 +1,11 @@
 package hexlet.code.schemas;
 
 public enum SchemasChecks {
-    required,
-    contains,
-    minLength,
-    positive,
-    range,
-    sizeof,
-    shape
+    REQUIRED,
+    CONTAINS,
+    MIN_LENGTH,
+    POSITIVE,
+    RANGE,
+    SIZE_OF,
+    SHAPE
 }

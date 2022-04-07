@@ -9,25 +9,25 @@ public final class MapSchema extends BaseSchema {
     private int sizeOf;
 
     public MapSchema required() {
-        getCheckList().add(SchemasChecks.required);
+        checkList.add(SchemasChecks.REQUIRED);
         return this;
     }
 
     public MapSchema sizeof(int size) {
         this.sizeOf = size;
-        getCheckList().add(SchemasChecks.sizeof);
+        checkList.add(SchemasChecks.SIZE_OF);
         return this;
     }
 
     public MapSchema shape(Map<String, BaseSchema> schemas) {
         this.schemasStorage = schemas;
-        getCheckList().add(SchemasChecks.shape);
+        checkList.add(SchemasChecks.SHAPE);
         return this;
     }
 
     @Override
     public boolean isRequired(Object mapToValidate, boolean isValid) {
-        if (this.getCheckList().contains(SchemasChecks.required) && !(mapToValidate instanceof Map<?, ?>)) {
+        if (checkList.contains(SchemasChecks.REQUIRED) && !(mapToValidate instanceof Map<?, ?>)) {
             return false;
         }
         return isValid;
@@ -45,7 +45,7 @@ public final class MapSchema extends BaseSchema {
     private boolean isSizeOf(Object mapToValidate, boolean isValid) {
         Map<String, Object> map = convertObjectToMap(mapToValidate);
 
-        if (this.getCheckList().contains(SchemasChecks.sizeof) && map != null) {
+        if (checkList.contains(SchemasChecks.SIZE_OF) && map != null) {
             if (map.size() != this.sizeOf) {
                 return false;
             }
@@ -56,7 +56,7 @@ public final class MapSchema extends BaseSchema {
     private boolean isMatchTheShape(Object mapToValidate, boolean isValid) {
         Map<String, Object> map = convertObjectToMap(mapToValidate);
 
-        if (this.getCheckList().contains(SchemasChecks.shape) && map != null) {
+        if (checkList.contains(SchemasChecks.SHAPE) && map != null) {
             for (Map.Entry<String, Object> entry : map.entrySet()) {
 
                 String key = entry.getKey();

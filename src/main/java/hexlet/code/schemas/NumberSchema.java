@@ -4,17 +4,17 @@ public final class NumberSchema extends BaseSchema {
     private final int[] thresholdValues = new int[2];
 
     public NumberSchema required() {
-        getCheckList().add(SchemasChecks.required);
+        checkList.add(SchemasChecks.REQUIRED);
         return this;
     }
 
     public NumberSchema positive() {
-        getCheckList().add(SchemasChecks.positive);
+        checkList.add(SchemasChecks.POSITIVE);
         return this;
     }
 
     public NumberSchema range(int lowerThreshold, int upperThreshold) {
-        getCheckList().add(SchemasChecks.range);
+        checkList.add(SchemasChecks.RANGE);
         this.thresholdValues[0] = lowerThreshold;
         this.thresholdValues[1] = upperThreshold;
         return this;
@@ -32,14 +32,14 @@ public final class NumberSchema extends BaseSchema {
 
     @Override
     public boolean isRequired(Object numberToValidate, boolean isValid) {
-        if (this.getCheckList().contains(SchemasChecks.required) && !(numberToValidate instanceof Integer)) {
+        if (checkList.contains(SchemasChecks.REQUIRED) && !(numberToValidate instanceof Integer)) {
             return false;
         }
         return isValid;
     }
 
     private boolean isPositive(Object numberToValidate, boolean isValid) {
-        if (this.getCheckList().contains(SchemasChecks.positive) && numberToValidate instanceof Integer) {
+        if (checkList.contains(SchemasChecks.POSITIVE) && numberToValidate instanceof Integer) {
             if ((Integer) numberToValidate <= 0) {
                 return false;
             }
@@ -49,7 +49,7 @@ public final class NumberSchema extends BaseSchema {
     }
 
     private boolean isInRange(Object numberToValidate, boolean isValid) {
-        if (this.getCheckList().contains(SchemasChecks.range) && numberToValidate instanceof Integer) {
+        if (checkList.contains(SchemasChecks.RANGE) && numberToValidate instanceof Integer) {
             if (!((Integer) numberToValidate >= getThresholdValues()[0]
                     && (Integer) numberToValidate <= getThresholdValues()[1])) {
                 return false;
