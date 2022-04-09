@@ -13,13 +13,13 @@ public final class MapSchema extends BaseSchema {
         return this;
     }
 
-    public MapSchema sizeof(int size) throws IllegalArgumentException, NullPointerException {
+    public MapSchema sizeof(int size) throws IllegalArgumentException {
         Predicate<Object> isMapSizeEqualTo = x -> convertObjectToMap(x).size() == size;
         addCheck(Checks.SIZE_OF, isMapSizeEqualTo);
         return this;
     }
 
-    public MapSchema shape(Map<String, BaseSchema> schemas) throws IllegalArgumentException, NullPointerException {
+    public MapSchema shape(Map<String, BaseSchema> schemas) throws IllegalArgumentException {
         Predicate<Object> isMapMatchTheShape = x -> {
             Map<String, Object> map = convertObjectToMap(x);
             for (String key : map.keySet()) {
@@ -34,8 +34,7 @@ public final class MapSchema extends BaseSchema {
         return this;
     }
 
-    private Map<String, Object> convertObjectToMap(Object object)
-            throws IllegalArgumentException, NullPointerException {
+    private Map<String, Object> convertObjectToMap(Object object) throws IllegalArgumentException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.convertValue(object, Map.class);
     }
