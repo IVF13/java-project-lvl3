@@ -16,6 +16,14 @@ public abstract class BaseSchema {
             return false;
         }
 
+        return toRunOtherChecks(objectToValidate);
+    }
+
+    protected final void addCheck(Checks check, Predicate<Object> predicate) {
+        checkList.put(check, predicate);
+    }
+
+    private boolean toRunOtherChecks(Object objectToValidate) {
         try {
             for (Map.Entry<Checks, Predicate<Object>> check : checkList.entrySet()) {
                 if (!check.getValue().test(objectToValidate)) {
@@ -28,10 +36,5 @@ public abstract class BaseSchema {
 
         return true;
     }
-
-    protected final void addCheck(Checks check, Predicate<Object> predicate) {
-        checkList.put(check, predicate);
-    }
-
 
 }
