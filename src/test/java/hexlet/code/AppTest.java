@@ -14,7 +14,6 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 class AppTest {
     private StringSchema stringSchema;
     private NumberSchema numberSchema;
@@ -29,17 +28,10 @@ class AppTest {
     }
 
     @Test
-    void stringSchemaWthOutOptionsTest() {
-        assertTrue(stringSchema.isValid(""));
-        assertTrue(stringSchema.isValid(null));
-        assertTrue(stringSchema.isValid("hexlet"));
-        assertTrue(stringSchema.isValid("All values is valid"));
-    }
-
-    @Test
     void stringSchemaRequiredTest() {
         assertTrue(stringSchema.isValid(""));
         assertTrue(stringSchema.isValid(null));
+        assertTrue(stringSchema.isValid(new ArrayList<>()));
 
         stringSchema.required();
 
@@ -52,23 +44,35 @@ class AppTest {
 
     @Test
     void stringSchemaContainsTest() {
-        stringSchema.required();
         assertTrue(stringSchema.contains("what").isValid("what does the fox say"));
         assertFalse(stringSchema.contains("whatthe").isValid("what does the fox say"));
 
         assertFalse(stringSchema.isValid("what does the fox say"));
         assertTrue(stringSchema.isValid("what whatthe"));
+        assertTrue(stringSchema.isValid(null));
+        assertTrue(stringSchema.isValid(3));
+
+        stringSchema.required();
+
+        assertTrue(stringSchema.isValid("what whatthe"));
         assertFalse(stringSchema.isValid(null));
+        assertFalse(stringSchema.isValid(3));
     }
 
     @Test
     void stringSchemaMinLengthTest() {
         final int minLength = 3;
-        stringSchema.required();
 
         assertTrue(stringSchema.minLength(minLength).isValid("whatthe"));
         assertTrue(stringSchema.isValid("lol"));
+        assertTrue(stringSchema.isValid(null));
+        assertFalse(stringSchema.isValid("mm"));
+
+        stringSchema.required();
+
+        assertTrue(stringSchema.isValid("lol"));
         assertFalse(stringSchema.isValid(null));
+        assertFalse(stringSchema.isValid("mm"));
     }
 
     @Test
@@ -117,9 +121,14 @@ class AppTest {
 
     @Test
     void numberSchemaPositiveTest() {
+        assertTrue(numberSchema.positive().isValid(10));
+        assertFalse(numberSchema.isValid(-10));
+        assertTrue(numberSchema.isValid("f"));
+        assertTrue(numberSchema.isValid(null));
+
         numberSchema.required();
 
-        assertTrue(numberSchema.positive().isValid(10));
+        assertTrue(numberSchema.isValid(10));
         assertFalse(numberSchema.isValid(-10));
         assertFalse(numberSchema.isValid("f"));
         assertFalse(numberSchema.isValid(null));
@@ -127,14 +136,19 @@ class AppTest {
 
     @Test
     void numberSchemaRangeTest() {
-        numberSchema.required();
-
         assertTrue(numberSchema.range(5, 10).isValid(6));
 
         assertTrue(numberSchema.isValid(5));
         assertTrue(numberSchema.isValid(8));
         assertTrue(numberSchema.isValid(10));
         assertFalse(numberSchema.isValid(4));
+        assertFalse(numberSchema.isValid(11));
+        assertTrue(numberSchema.isValid(null));
+        assertTrue(numberSchema.isValid("t"));
+
+        numberSchema.required();
+
+        assertTrue(numberSchema.isValid(10));
         assertFalse(numberSchema.isValid(11));
         assertFalse(numberSchema.isValid(null));
         assertFalse(numberSchema.isValid("t"));
@@ -175,6 +189,7 @@ class AppTest {
     @Test
     void mapSchemaWthOutOptionsTest() {
         assertTrue(mapSchema.isValid(null));
+        assertTrue(mapSchema.isValid(new ArrayList<>()));
     }
 
     @Test
@@ -196,16 +211,17 @@ class AppTest {
         Map<String, String> data = new HashMap<>();
         data.put("key1", "value1");
 
-        assertTrue(mapSchema.isValid(data));
-
-        mapSchema.required();
         mapSchema.sizeof(2);
-
         assertFalse(mapSchema.isValid(data));
 
         data.put("key2", "value2");
-
         assertTrue(mapSchema.isValid(data));
+
+        assertTrue(mapSchema.isValid(null));
+        assertTrue(mapSchema.isValid(""));
+        assertTrue(mapSchema.isValid(new ArrayList<>()));
+
+        mapSchema.required();
 
         assertFalse(mapSchema.isValid(null));
         assertFalse(mapSchema.isValid(""));
@@ -218,7 +234,6 @@ class AppTest {
         schemas.put("name", validator.string().required());
         schemas.put("age", validator.number().positive());
 
-        mapSchema.required();
         mapSchema.shape(schemas);
 
         Map<String, Object> human1 = new HashMap<>();
@@ -241,9 +256,19 @@ class AppTest {
         human4.put("age", -5);
         assertFalse(mapSchema.isValid(human4));
 
+        assertTrue(mapSchema.isValid(""));
+        assertTrue(mapSchema.isValid(null));
+        assertTrue(mapSchema.isValid(new ArrayList<>()));
+
+        mapSchema.required();
+
         assertFalse(mapSchema.isValid(""));
         assertFalse(mapSchema.isValid(null));
         assertFalse(mapSchema.isValid(new ArrayList<>()));
+        assertTrue(mapSchema.isValid(human1));
+        assertTrue(mapSchema.isValid(human2));
+        assertFalse(mapSchema.isValid(human3));
+        assertFalse(mapSchema.isValid(human4));
     }
 
 }

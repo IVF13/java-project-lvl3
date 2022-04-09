@@ -3,81 +3,40 @@ package hexlet.code.schemas;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Map;
+import java.util.function.Predicate;
 
 public final class MapSchema extends BaseSchema {
-    private Map<String, BaseSchema> schemasStorage;
-    private int sizeOf;
 
     public MapSchema required() {
-        checkList.add(SchemasChecks.REQUIRED);
+        Predicate<Object> isMap = x -> x instanceof Map;
+        addCheck(Checks.REQUIRED, isMap);
         return this;
     }
 
-    public MapSchema sizeof(int size) {
-        this.sizeOf = size;
-        checkList.add(SchemasChecks.SIZE_OF);
+    public MapSchema sizeof(int size) throws IllegalArgumentException {
+        Predicate<Object> isMapSizeEqualTo = x -> convertObjectToMap(x).size() == size;
+        addCheck(Checks.SIZE_OF, isMapSizeEqualTo);
         return this;
     }
 
-    public MapSchema shape(Map<String, BaseSchema> schemas) {
-        this.schemasStorage = schemas;
-        checkList.add(SchemasChecks.SHAPE);
-        return this;
-    }
-
-    @Override
-    public boolean isRequired(Object mapToValidate, boolean isValid) {
-        if (checkList.contains(SchemasChecks.REQUIRED) && !(mapToValidate instanceof Map<?, ?>)) {
-            return false;
-        }
-        return isValid;
-    }
-
-    @Override
-    public boolean isPassesOtherTests(Object mapToValidate, boolean isValid) {
-        isValid = isSizeOf(mapToValidate, isValid);
-
-        isValid = isMatchTheShape(mapToValidate, isValid);
-
-        return isValid;
-    }
-
-    private boolean isSizeOf(Object mapToValidate, boolean isValid) {
-        Map<String, Object> map = convertObjectToMap(mapToValidate);
-
-        if (checkList.contains(SchemasChecks.SIZE_OF) && map != null) {
-            if (map.size() != this.sizeOf) {
-                return false;
-            }
-        }
-        return isValid;
-    }
-
-    private boolean isMatchTheShape(Object mapToValidate, boolean isValid) {
-        Map<String, Object> map = convertObjectToMap(mapToValidate);
-
-        if (checkList.contains(SchemasChecks.SHAPE) && map != null) {
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-
-                String key = entry.getKey();
-                Object value = entry.getValue();
-
-                if (schemasStorage.containsKey(key) && !schemasStorage.get(key).isValid(value)) {
+    public MapSchema shape(Map<String, BaseSchema> schemas) throws IllegalArgumentException {
+        Predicate<Object> isMapMatchTheShape = x -> {
+            Map<String, Object> map = convertObjectToMap(x);
+            for (String key : map.keySet()) {
+                if (!schemas.get(key).isValid(map.get(key))) {
                     return false;
                 }
-
             }
-        }
-        return isValid;
+            return true;
+        };
+
+        addCheck(Checks.SHAPE, isMapMatchTheShape);
+        return this;
     }
 
-    private Map<String, Object> convertObjectToMap(Object object) {
-        if (object instanceof Map) {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.convertValue(object, Map.class);
-        } else {
-            return null;
-        }
+    private Map<String, Object> convertObjectToMap(Object object) throws IllegalArgumentException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.convertValue(object, Map.class);
     }
 
 }

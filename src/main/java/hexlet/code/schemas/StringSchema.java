@@ -1,74 +1,25 @@
 package hexlet.code.schemas;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.function.Predicate;
 
 public final class StringSchema extends BaseSchema {
-    private final List<String> stringsMustBeContained = new ArrayList<>();
-    private int minLength = 0;
 
-    public StringSchema required() {
-        checkList.add(SchemasChecks.REQUIRED);
+    public StringSchema required() throws ClassCastException {
+        Predicate<Object> isNonEmptyString = x -> x instanceof String && !((String) x).isEmpty();
+        addCheck(Checks.REQUIRED, isNonEmptyString);
         return this;
     }
 
-    public StringSchema minLength(int length) {
-        checkList.add(SchemasChecks.MIN_LENGTH);
-        this.minLength = length;
+    public StringSchema minLength(int length) throws ClassCastException {
+        Predicate<Object> isLongEnough = x -> ((String) x).length() >= length;
+        addCheck(Checks.MIN_LENGTH, isLongEnough);
         return this;
     }
 
-    public StringSchema contains(String content) {
-        checkList.add(SchemasChecks.CONTAINS);
-        this.stringsMustBeContained.add(content);
+    public StringSchema contains(String content) throws ClassCastException {
+        Predicate<Object> isContains = x -> ((String) x).contains(content);
+        addCheck(Checks.CONTAINS, isContains);
         return this;
-    }
-
-    @Override
-    public boolean isPassesOtherTests(Object stringToValidate, boolean isValid) {
-
-        isValid = isContain(stringToValidate, isValid);
-
-        isValid = isLongEnough(stringToValidate, isValid);
-
-        return isValid;
-    }
-
-    @Override
-    public boolean isRequired(Object stringToValidate, boolean isValid) {
-        if (checkList.contains(SchemasChecks.REQUIRED)
-                && (!(stringToValidate instanceof String) || stringToValidate.toString().isEmpty())) {
-            return false;
-        }
-        return isValid;
-    }
-
-    private boolean isContain(Object stringToValidate, boolean isValid) {
-        if (checkList.contains(SchemasChecks.CONTAINS) && stringToValidate instanceof String) {
-            for (String content : getStringsMustBeContained()) {
-                if (!stringToValidate.toString().contains(content)) {
-                    return false;
-                }
-            }
-        }
-        return isValid;
-    }
-
-    private boolean isLongEnough(Object stringToValidate, boolean isValid) {
-        if (checkList.contains(SchemasChecks.MIN_LENGTH) && stringToValidate instanceof String) {
-            if (stringToValidate.toString().length() < getMinLength()) {
-                return false;
-            }
-        }
-        return isValid;
-    }
-
-    public List<String> getStringsMustBeContained() {
-        return stringsMustBeContained;
-    }
-
-    public int getMinLength() {
-        return minLength;
     }
 
 }
