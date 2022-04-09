@@ -34,7 +34,8 @@ public final class MapSchema extends BaseSchema {
         return this;
     }
 
-    private Map<String, Object> convertObjectToMap(Object object) throws IllegalArgumentException, NullPointerException {
+    private Map<String, Object> convertObjectToMap(Object object)
+            throws IllegalArgumentException, NullPointerException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.convertValue(object, Map.class);
     }
