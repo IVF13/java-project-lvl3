@@ -9,14 +9,6 @@ public abstract class BaseSchema {
 
     public final boolean isValid(Object objectToValidate) {
 
-        if (!checkList.containsKey(Checks.REQUIRED)) {
-            if (objectToValidate == null) {
-                return true;
-            }
-        } else if (!checkList.get(Checks.REQUIRED).test(objectToValidate)) {
-            return false;
-        }
-
         try {
 
             for (Map.Entry<Checks, Predicate<Object>> check : checkList.entrySet()) {
@@ -25,7 +17,7 @@ public abstract class BaseSchema {
                 }
             }
 
-        } catch (ClassCastException | IllegalArgumentException ignored) {
+        } catch (ClassCastException | IllegalArgumentException | NullPointerException ignored) {
         }
 
         return true;
