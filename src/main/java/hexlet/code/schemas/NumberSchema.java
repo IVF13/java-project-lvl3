@@ -4,6 +4,7 @@ import java.util.function.Predicate;
 
 public final class NumberSchema extends BaseSchema {
 
+    @Override
     public NumberSchema required() {
         Predicate<Object> isNumber = x -> x instanceof Integer;
         addCheck(Checks.REQUIRED, isNumber);

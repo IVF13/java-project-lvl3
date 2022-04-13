@@ -1,29 +1,27 @@
 package hexlet.code.schemas;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Map;
 import java.util.function.Predicate;
 
 public final class MapSchema extends BaseSchema {
 
+    @Override
     public MapSchema required() {
         Predicate<Object> isMap = x -> x instanceof Map;
         addCheck(Checks.REQUIRED, isMap);
         return this;
     }
 
-    public MapSchema sizeof(int size) throws IllegalArgumentException {
-        Predicate<Object> isMapSizeEqualTo = x -> convertObjectToMap(x).size() == size;
+    public MapSchema sizeof(int size) throws ClassCastException {
+        Predicate<Object> isMapSizeEqualTo = x -> ((Map<String, Object>) x).size() == size;
         addCheck(Checks.SIZE_OF, isMapSizeEqualTo);
         return this;
     }
 
-    public MapSchema shape(Map<String, BaseSchema> schemas) throws IllegalArgumentException {
+    public MapSchema shape(Map<String, BaseSchema> schemas) throws ClassCastException {
         Predicate<Object> isMapMatchTheShape = x -> {
-            Map<String, Object> map = convertObjectToMap(x);
-            for (String key : map.keySet()) {
-                if (!schemas.get(key).isValid(map.get(key))) {
+            for (String key : ((Map<String, Object>) x).keySet()) {
+                if (!schemas.get(key).isValid(((Map<String, Object>) x).get(key))) {
                     return false;
                 }
             }
@@ -32,11 +30,6 @@ public final class MapSchema extends BaseSchema {
 
         addCheck(Checks.SHAPE, isMapMatchTheShape);
         return this;
-    }
-
-    private Map<String, Object> convertObjectToMap(Object object) throws IllegalArgumentException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.convertValue(object, Map.class);
     }
 
 }

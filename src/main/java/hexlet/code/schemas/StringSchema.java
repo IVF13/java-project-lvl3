@@ -4,6 +4,7 @@ import java.util.function.Predicate;
 
 public final class StringSchema extends BaseSchema {
 
+    @Override
     public StringSchema required() throws ClassCastException {
         Predicate<Object> isNonEmptyString = x -> x instanceof String && !((String) x).isEmpty();
         addCheck(Checks.REQUIRED, isNonEmptyString);
