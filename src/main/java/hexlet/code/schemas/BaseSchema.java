@@ -10,16 +10,15 @@ public abstract class BaseSchema {
     public abstract BaseSchema required();
 
     public final boolean isValid(Object objectToValidate) {
-        try {
-            for (Map.Entry<Checks, Predicate<Object>> check : checks.entrySet()) {
+        for (Map.Entry<Checks, Predicate<Object>> check : checks.entrySet()) {
+            try {
                 if (!check.getValue().test(objectToValidate)) {
                     return false;
                 }
-            }
-
-        } catch (ClassCastException | NullPointerException ignored) {
-            if (checks.containsKey(Checks.REQUIRED)) {
-                return false;
+            } catch (ClassCastException | NullPointerException ignored) {
+                if (checks.containsKey(Checks.REQUIRED)) {
+                    return false;
+                }
             }
         }
 
