@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 public abstract class BaseSchema {
     private final Map<Checks, Predicate<Object>> checks = new HashMap<>();
 
-    public abstract BaseSchema required();
+    abstract BaseSchema required();
 
     public final boolean isValid(Object objectToValidate) {
         try {
