@@ -13,18 +13,23 @@ public final class MapSchema extends BaseSchema {
     }
 
     public MapSchema sizeof(int size) throws ClassCastException {
-        Predicate<Object> isMapSizeEqualTo = x -> ((Map<String, Object>) x).size() == size;
+        Predicate<Object> isMapSizeEqualTo = x -> !(x instanceof Map) || ((Map<String, Object>) x).size() == size;
         addCheck(Checks.SIZE_OF, isMapSizeEqualTo);
         return this;
     }
 
     public MapSchema shape(Map<String, BaseSchema> schemas) throws ClassCastException {
         Predicate<Object> isMapMatchTheShape = x -> {
-            for (String key : ((Map<String, Object>) x).keySet()) {
-                if (!schemas.get(key).isValid(((Map<String, Object>) x).get(key))) {
-                    return false;
+            if (!(x instanceof Map)) {
+                return true;
+            } else {
+                for (String key : ((Map<String, Object>) x).keySet()) {
+                    if (!schemas.get(key).isValid(((Map<String, Object>) x).get(key))) {
+                        return false;
+                    }
                 }
             }
+
             return true;
         };
 

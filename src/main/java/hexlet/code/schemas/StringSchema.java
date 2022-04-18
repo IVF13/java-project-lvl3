@@ -12,13 +12,13 @@ public final class StringSchema extends BaseSchema {
     }
 
     public StringSchema minLength(int length) throws ClassCastException {
-        Predicate<Object> isLongEnough = x -> ((String) x).length() >= length;
+        Predicate<Object> isLongEnough = x -> !(x instanceof String) || ((String) x).length() >= length;
         addCheck(Checks.MIN_LENGTH, isLongEnough);
         return this;
     }
 
     public StringSchema contains(String content) throws ClassCastException {
-        Predicate<Object> isContains = x -> ((String) x).contains(content);
+        Predicate<Object> isContains = x -> !(x instanceof String) || ((String) x).contains(content);
         addCheck(Checks.CONTAINS, isContains);
         return this;
     }

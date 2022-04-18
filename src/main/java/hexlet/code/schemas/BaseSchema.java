@@ -10,10 +10,8 @@ public abstract class BaseSchema {
     abstract BaseSchema required();
 
     public final boolean isValid(Object objectToValidate) {
-        try {
-            return toRunChecks(objectToValidate);
-        } catch (ClassCastException | NullPointerException ignored) {
-            if (checks.containsKey(Checks.REQUIRED)) {
+        for (Map.Entry<Checks, Predicate<Object>> check : checks.entrySet()) {
+            if (!check.getValue().test(objectToValidate)) {
                 return false;
             }
         }
@@ -23,16 +21,6 @@ public abstract class BaseSchema {
 
     protected final void addCheck(Checks check, Predicate<Object> predicate) {
         checks.put(check, predicate);
-    }
-
-    private boolean toRunChecks(Object objectToValidate) throws NullPointerException, ClassCastException {
-        for (Map.Entry<Checks, Predicate<Object>> check : checks.entrySet()) {
-            if (!check.getValue().test(objectToValidate)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
 }

@@ -12,13 +12,14 @@ public final class NumberSchema extends BaseSchema {
     }
 
     public NumberSchema positive() throws ClassCastException {
-        Predicate<Object> isPositive = x -> ((Integer) x) > 0;
+        Predicate<Object> isPositive = x -> !(x instanceof Integer) || ((Integer) x) > 0;
         addCheck(Checks.POSITIVE, isPositive);
         return this;
     }
 
     public NumberSchema range(int lowerThreshold, int upperThreshold) throws ClassCastException {
-        Predicate<Object> isInRange = x -> (Integer) x >= lowerThreshold && (Integer) x <= upperThreshold;
+        Predicate<Object> isInRange = x -> !(x instanceof Integer)
+                || (Integer) x >= lowerThreshold && (Integer) x <= upperThreshold;
         addCheck(Checks.RANGE, isInRange);
         return this;
     }
